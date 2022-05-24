@@ -85,7 +85,14 @@ public class AppartementServlet extends HttpServlet {
 			String filter = request.getParameter("filter");
 			if(filter != null && filter.equals("AVAILABLE")) {
 				String enterDate = request.getParameter("enterDate");
-				ArrayList<Appartement> available = aps.getAvailable(enterDate);
+				ArrayList<Appartement> available = new ArrayList<Appartement>();
+				if(enterDate != null) {
+					available = aps.getAvailable(enterDate);
+				} else {
+					available = aps.getAvailable();
+				}
+				
+
 				jsonOutput = gson.toJson(available);
 				System.out.println(jsonOutput);
 			} else {

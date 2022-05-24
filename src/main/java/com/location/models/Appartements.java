@@ -59,12 +59,32 @@ public class Appartements {
 	}
 	
 	public ArrayList<Appartement> getAvailable(String enterDate){
+		//appartements deja occupe mais libre a la date d'entree du locataire
 		ArrayList<Appartement> aps = new ArrayList<Appartement>();
 		try {
 			Statement stmt = MysqlConnect.getInstance().createStatement();
-			String query = "SELECT *, DATE_ADD(date_entree, INTERVAL nbr_mois MONTH) AS date_fin ";
+			String query = "SELECT *, DATE_ADD(date_entree, INTERVAL nbr_mois MONTH) AS date_fin, ap.id AS apid ";
 			   	   query +="FROM louer l JOIN appartements ap ON l.appartement_id = ap.id ";
 			       query +="WHERE DATE_ADD(date_entree, INTERVAL nbr_mois MONTH) < '"+enterDate+"' ";
+			ResultSet res = stmt.executeQuery(query);
+			while(res.next()) {
+				Appartement ap = new Appartement(res.getString("designation"), res.getString("lieu"), res.getInt("loyer"));
+				ap.setId(res.getInt("apid"));
+				aps.add(ap);
+			}
+			
+			
+		} catch(Exception e) {e.printStackTrace();}
+		
+		return aps;
+	}
+	public ArrayList<Appartement> getAvailable(){
+		//appartement libre jamais occupe
+		ArrayList<Appartement> aps = new ArrayList<Appartement>();
+		try {
+			Statement stmt = MysqlConnect.getInstance().createStatement();
+			String query = "SELECT * FROM appartements WHERE id NOT IN(SELECT appartement_id FROM louer) ORDER BY id DESC";
+			System.out.println(query);
 			ResultSet res = stmt.executeQuery(query);
 			while(res.next()) {
 				Appartement ap = new Appartement(res.getString("designation"), res.getString("lieu"), res.getInt("loyer"));
@@ -76,6 +96,5 @@ public class Appartements {
 		
 		return aps;
 	}
-	
 	
 }
