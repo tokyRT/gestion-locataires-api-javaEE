@@ -4,8 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Appartement extends Model{
-	String designation, lieu;
-	int id, loyer;
+	private String designation, lieu;
+	private int id, loyer;
+	private Locataire locataire = null;
 	String table = "appartements";
 	Appartements aps = new Appartements();
 	
@@ -31,6 +32,7 @@ public class Appartement extends Model{
 			prepare.setInt(3, loyer);
 			prepare.execute();
 			this.id = aps.last().getId();
+			this.locataire = this.getCurrentLocataire();
 		} catch(Exception e) {e.printStackTrace();}
 	}
 	
@@ -80,6 +82,9 @@ public class Appartement extends Model{
 		} catch(Exception e) {e.printStackTrace();}
 		return locs;
 	}
+	
+	
+	
 	public ArrayList<Locataire> getLocataires(int year){
 		ArrayList<Locataire> locs = new ArrayList<Locataire>();
 		try {
@@ -115,6 +120,23 @@ public class Appartement extends Model{
 			}
 		} catch(Exception e) {e.printStackTrace();}
 		return locs;
+	}
+	
+	public Locataire getCurrentLocataire() {
+		try {
+			Statement stmt = MysqlConnect.getInstance().createStatement();
+			String query = "SELECT * FROM locataires loc JOIN louer lou ON loc.id = lou.locataire_id ";
+				   query+= "WHERE appartement_id = "+this.id+" ";
+				   query+= "AND DATE_ADD(date_entree, INTERVAL nbr_mois MONTH) > NOW()";
+			ResultSet res = stmt.executeQuery(query);
+			if(res.next()) {
+				this.locataire = new Locataire(res.getString("nom"), res.getString("adresse"));
+				this.locataire.setId(res.getInt("id"));
+			}
+			
+		} catch(Exception e) {e.printStackTrace();}
+		
+		return this.locataire;
 	}
 	
 	public String getDesignation() {

@@ -21,6 +21,7 @@ public class Appartements {
 			while(res.next()) {
 				Appartement ap = new Appartement(res.getString("designation"), res.getString("lieu"), res.getInt("loyer"));
 				ap.setId(res.getInt("id"));
+				ap.getCurrentLocataire();
 				all.add(ap);
 			}
 			
