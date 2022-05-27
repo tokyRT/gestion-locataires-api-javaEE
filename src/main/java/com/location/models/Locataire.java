@@ -12,6 +12,7 @@ public class Locataire {
 	private String dateEntree;
 	private int apId;
 	private int nbrMois;
+	private int loyer;
 	String table = "locataires";
 	Locataires locs = new Locataires();
 	
@@ -36,7 +37,7 @@ public class Locataire {
 			this.id = locs.last().getId();
 			
 			//then saving his apartment
-			Louer location = new Louer(this.id, this.apId, this.dateEntree, this.nbrMois);
+			Louer location = new Louer(this.id, this.apId, this.dateEntree, this.nbrMois, this.loyer);
 			location.save();
 			
 		} catch(Exception e) {e.printStackTrace();}
@@ -80,8 +81,14 @@ public class Locataire {
 	public int getNbrMois() {
 		return nbrMois;
 	}
-	public void setNbrMois(int apId) {
+	public void setNbrMois(int nbrMois) {
 		this.nbrMois = nbrMois;
+	}
+	public int getLoyer() {
+		return loyer;
+	}
+	public void setLoyer(int loyer) {
+		this.loyer = loyer;
 	}
 	public String getNom() {
 		return nom;

@@ -39,6 +39,7 @@ public class Appartements {
 			res.next();
 			ap = new Appartement(res.getString("designation"), res.getString("lieu"), res.getInt("loyer"));
 			ap.setId(res.getInt("id"));
+			ap.getCurrentLocataire();
 			
 		} catch(Exception e) {e.printStackTrace();}
 		

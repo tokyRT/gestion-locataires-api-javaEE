@@ -12,24 +12,27 @@ public class Louer {
 	private int apId;
 	private String dateEntree;
 	private int nbrMois;
+	private int loyer;
 	
-	public Louer(int locId, int apId, String dateEntree, int nbrMois) {
+	public Louer(int locId, int apId, String dateEntree, int nbrMois, int loyer) {
 		this.locId = locId;
 		this.apId = apId;
 		this.dateEntree = dateEntree;
 		this.nbrMois = nbrMois;
+		this.loyer = loyer;
 	}
 	
 	public void save() {
 		try {
-			String query = "INSERT INTO louer (locataire_id, appartement_id, date_entree, nbr_mois) ";
-				   query+= "VALUES(?, ?, ?, ?)";
+			String query = "INSERT INTO louer (locataire_id, appartement_id, date_entree, nbr_mois, loyer) ";
+				   query+= "VALUES(?, ?, ?, ?, ?)";
 			
 			PreparedStatement prepare = MysqlConnect.getInstance().prepareStatement(query);
 			prepare.setInt(1, locId);
 			prepare.setInt(2, apId);
 			prepare.setString(3, dateEntree);
 			prepare.setInt(4, nbrMois);
+			prepare.setInt(5, loyer);
 			prepare.execute();
 			
 			this.id = last().getId();
@@ -43,7 +46,7 @@ public class Louer {
 			Statement stmt = MysqlConnect.getInstance().createStatement();
 			ResultSet res = stmt.executeQuery("SELECT * FROM louer ORDER BY id DESC LIMIT 1");
 			res.next();
-			l = new Louer(res.getInt("locataire_id"), res.getInt("appartement_id"), res.getString("date_entree"), res.getInt("nbr_mois"));
+			l = new Louer(res.getInt("locataire_id"), res.getInt("appartement_id"), res.getString("date_entree"), res.getInt("nbr_mois"), res.getInt("loyer"));
 			l.setId(res.getInt("id"));
 		} catch(Exception e) {e.printStackTrace();}
 		
@@ -87,6 +90,14 @@ public class Louer {
 
 	public void setNbrMois(int nbrMois) {
 		this.nbrMois = nbrMois;
+	}
+	
+	public int getLoyer() {
+		return loyer;
+	}
+
+	public void setLoyer(int loyer) {
+		this.loyer = loyer;
 	}
 	
 	

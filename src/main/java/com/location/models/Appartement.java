@@ -69,7 +69,7 @@ public class Appartement extends Model{
 		ArrayList<Locataire> locs = new ArrayList<Locataire>();
 		try {
 			Statement stmt = MysqlConnect.getInstance().createStatement();
-			String query = "SELECT loc.id, loc.nom, loc.adresse ";
+			String query = "SELECT * ";
 				   query +="FROM locataires AS loc JOIN louer AS l ON loc.id = l.locataire_id ";
 				   query +="WHERE l.appartement_id = "+id;
 			ResultSet res = stmt.executeQuery(query);
@@ -77,7 +77,12 @@ public class Appartement extends Model{
 			while(res.next()) {
 				Locataire loc = new Locataire(res.getString("nom"), res.getString("adresse"));
 				loc.setId(res.getInt("id"));
+				loc.setDateEntree(res.getString("date_entree"));
+				loc.setNbrMois(res.getInt("nbr_mois"));
+				loc.setLoyer(res.getInt("loyer"));
+				loc.setApId(this.id);
 				locs.add(loc);
+				
 			}
 		} catch(Exception e) {e.printStackTrace();}
 		return locs;
@@ -98,6 +103,10 @@ public class Appartement extends Model{
 			while(res.next()) {
 				Locataire loc = new Locataire(res.getString("nom"), res.getString("adresse"));
 				loc.setId(res.getInt("id"));
+				loc.setDateEntree(res.getString("date_entree"));
+				loc.setNbrMois(res.getInt("nbr_mois"));
+				loc.setLoyer(res.getInt("loyer"));
+				loc.setApId(this.id);
 				locs.add(loc);
 			}
 		} catch(Exception e) {e.printStackTrace();}
@@ -116,6 +125,10 @@ public class Appartement extends Model{
 			while(res.next()) {
 				Locataire loc = new Locataire(res.getString("nom"), res.getString("adresse"));
 				loc.setId(res.getInt("id"));
+				loc.setDateEntree(res.getString("date_entree"));
+				loc.setNbrMois(res.getInt("nbr_mois"));
+				loc.setLoyer(res.getInt("loyer"));
+				loc.setApId(this.id);
 				locs.add(loc);
 			}
 		} catch(Exception e) {e.printStackTrace();}
@@ -132,6 +145,10 @@ public class Appartement extends Model{
 			if(res.next()) {
 				this.locataire = new Locataire(res.getString("nom"), res.getString("adresse"));
 				this.locataire.setId(res.getInt("id"));
+				this.locataire.setDateEntree(res.getString("date_entree"));
+				this.locataire.setNbrMois(res.getInt("nbr_mois"));
+				this.locataire.setLoyer(res.getInt("loyer"));
+				this.locataire.setApId(this.id);
 			}
 			
 		} catch(Exception e) {e.printStackTrace();}
