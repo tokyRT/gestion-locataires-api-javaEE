@@ -33,4 +33,13 @@
 		<servlet-name>LocataireServlet</servlet-name>
 		<url-pattern>/locataire</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>StatServlet</servlet-name>
+		<servlet-class>com.location.servlets.StatServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>StatServlet</servlet-name>
+		<url-pattern>/stat</url-pattern>
+	</servlet-mapping>
 </web-app>
